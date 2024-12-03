@@ -1,4 +1,4 @@
-## Group Activity on Concurrency
+## Group Activity on Concurrency using Scala Futures
 
 In this group activity, we'll experiment with Scala futures. 
 
