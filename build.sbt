@@ -1,5 +1,3 @@
-scalaVersion := "3.3.3"
-
 Compile / scalacOptions ++= Seq(
   "-deprecation"
 , "-feature"
