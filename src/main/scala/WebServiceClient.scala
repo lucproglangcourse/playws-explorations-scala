@@ -11,8 +11,10 @@ val system = ActorSystem("wsplay-example")
 given ActorSystem = system
 val wsClient = StandaloneAhcWSClient()
 
-val urls = (10000000 to 10005000).map: n =>
-  "https://primechecker.azurewebsites.net/api/isPrime?number=" + n
+val urls = (1500450000 to 1500455000).map: n =>
+  "http://linode5.cs.luc.edu:8080/" + n
+  
+//  "https://primechecker.azurewebsites.net/api/isPrime?number=" + n
 
 class WebServiceClient:
 
