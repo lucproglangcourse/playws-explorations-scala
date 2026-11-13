@@ -11,17 +11,38 @@ val system = ActorSystem("wsplay-example")
 given ActorSystem = system
 val wsClient = StandaloneAhcWSClient()
 
-val urls = (1500450000 to 1500455000).map: n =>
-  "http://linode5.cs.luc.edu:8080/" + n
-  
-//  "https://primechecker.azurewebsites.net/api/isPrime?number=" + n
+val services = Seq(
+  "http://linode5.cs.luc.edu:8080/", // might be down
+  "http://laufer-luc-oci.privatedns.org:8080/", // might not handle load
+  "https://primenumbers-http4s-scala-latest.onrender.com/" // slow to wake up
+)
 
-class WebServiceClient:
+class WebServicesTest:
+
+  services.foreach: s =>
+    val u = s + "6007"
+    val f = wsClient.url(u).get()
+    f.onComplete:
+      case Success(r) =>
+        System.err.nn.println(s"request to $u returned ${r.status}")
+      case _ =>
+        System.err.nn.println(s"request to $u failed")
+
+
+// TODO choose a working service based on preceding test
+class WebServiceClient(index: Int = 2, start: Int = 6001, end: Int = 7000):
+
+  System.err.nn.println(s"using service ${services(index)}")
+
+  val urls = (start to end).map: n =>
+    services(index) + n
+
+  System.err.nn.println(s"creating requests between ${start} and ${end} (${end - start + 1} requests)")
 
   // Seq[Future[...]]
   val requests = urls.map(u => wsClient.url(u).get())
 
-  System.err.nn.println("submitted request")
+  System.err.nn.println("submitted requests")
 
   val results = requests.map: f =>
     f.map: r =>
@@ -40,7 +61,7 @@ class WebServiceClient:
   val f3 = Future.sequence(resultsFailsafe)
   val f4 = f3.map(r => r.count(identity))
 
-  System.err.nn.println("defined other futures")
+  System.err.nn.println("defined additional futures")
   System.err.nn.println("ready for observation")
 
   // *** section 3 ***

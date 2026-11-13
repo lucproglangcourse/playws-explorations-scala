@@ -9,10 +9,11 @@ For more details, see group activity 4 in Sakai.
 ```
 ❯ sbt console
 ...
-scala> val c = new WebServiceClient
-submitted request
+scala> val c = new WebServiceClient(2, 1000000, 1001000)
+using service https://primenumbers-http4s-scala-latest.onrender.com/
+submitted requests
 defined direct results
-defined other futures
+defined additional futures
 ready for observation
 val c: WebServiceClient = WebServiceClient@4d1ca627
 
@@ -25,17 +26,18 @@ Some(Failure(java.net.ConnectException: handshake timed out after 10000ms))
 None
 
 scala> c.printProgress()
-2293
-2293
+793
+793
 
 scala> all requests completed
-108
+75
+75
 
 scala> c.printResults()
 Some(Failure(java.net.ConnectException: handshake timed out after 10000ms))
-Some(Success(92))
+Some(Success(75))
 
 scala> c.printProgress()
-5001
-5001
+989
+1001
 ```
